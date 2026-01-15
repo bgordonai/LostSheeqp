@@ -1,0 +1,164 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>The Remnant Protocol</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; }
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            background-color: #0c0a09;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            color: #f5f5f4;
+            -webkit-tap-highlight-color: transparent;
+            overflow-x: hidden;
+        }
+        .font-cinzel { font-family: 'Cinzel', serif; }
+        .font-playfair { font-family: 'Playfair Display', serif; }
+        
+        .gold-gradient {
+            background: linear-gradient(135deg, #d4af37 0%, #f9d71c 50%, #b8860b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .shadow-gold { box-shadow: 0 0 30px rgba(212, 175, 55, 0.4); }
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+
+        /* Day Mode: Heavenly Gold & Clouds */
+        .day-bg {
+            background: linear-gradient(to bottom, #fffbeb 0%, #fef3c7 20%, #d4d4d8 100%);
+            color: #1c1917;
+        }
+        .day-bg .text-stone-100 { color: #1c1917; }
+        .day-bg .text-stone-300 { color: #44403c; }
+        .day-bg .text-stone-400 { color: #57534e; }
+        .day-bg .text-stone-500 { color: #78716c; }
+
+        .cloud {
+            position: absolute;
+            background: white;
+            filter: blur(60px);
+            opacity: 0.6;
+            border-radius: 50%;
+            animation: drift linear infinite;
+        }
+
+        .god-ray {
+            position: absolute;
+            top: -50%;
+            left: 50%;
+            width: 200%;
+            height: 200%;
+            background: repeating-conic-gradient(from 0deg, transparent 0deg 10deg, rgba(251, 191, 36, 0.05) 15deg 25deg);
+            animation: rotate 120s linear infinite;
+            transform-origin: center center;
+            pointer-events: none;
+        }
+
+        /* Night Mode: Cosmic Stars */
+        .night-bg {
+            background: radial-gradient(circle at 50% 0%, #1e1b4b 0%, #0c0a09 100%);
+            color: #f5f5f4;
+        }
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            opacity: 0.5;
+            animation: twinkle var(--duration) ease-in-out infinite;
+        }
+
+        /* TRIBAL AURAS (Demon Slayer Style) */
+        .aura-lion {
+            background: radial-gradient(circle, rgba(212,175,55,0.4) 0%, transparent 70%);
+            animation: aura-pulse 3s ease-in-out infinite;
+        }
+        .aura-spiritual {
+            background: radial-gradient(circle, rgba(59,130,246,0.3) 0%, transparent 70%);
+            filter: contrast(150%) brightness(120%);
+            animation: aura-shimmer 4s ease-in-out infinite;
+        }
+        .aura-wolf {
+            background: radial-gradient(circle, rgba(28,25,23,0.5) 0%, transparent 70%);
+            animation: aura-swirl 6s linear infinite;
+        }
+        .aura-ox {
+            background: radial-gradient(circle, rgba(168,85,247,0.3) 0%, transparent 70%);
+            animation: aura-heavy-pulse 5s ease-in-out infinite;
+        }
+
+        @keyframes aura-pulse {
+            0%, 100% { transform: scale(1); opacity: 0.4; }
+            50% { transform: scale(1.15); opacity: 0.7; }
+        }
+        @keyframes aura-shimmer {
+            0%, 100% { opacity: 0.3; transform: skewX(0deg); }
+            50% { opacity: 0.6; transform: skewX(5deg); }
+        }
+        @keyframes aura-swirl {
+            from { transform: rotate(0deg) scale(1); }
+            to { transform: rotate(360deg) scale(1.1); }
+        }
+        @keyframes aura-heavy-pulse {
+            0%, 100% { transform: scale(0.9); opacity: 0.2; }
+            50% { transform: scale(1.05); opacity: 0.5; }
+        }
+
+        @keyframes drift {
+            from { transform: translateX(-20vw); }
+            to { transform: translateX(120vw); }
+        }
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.2; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.3); }
+        }
+        @keyframes rotate {
+            from { transform: translate(-50%, -50%) rotate(0deg); }
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+        
+        nav {
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            box-shadow: 0 -10px 50px rgba(0,0,0,0.9);
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .day-bg nav {
+            background: rgba(255, 255, 255, 0.85) !important;
+            border-top: 1px solid rgba(0,0,0,0.05);
+            box-shadow: 0 -10px 50px rgba(0,0,0,0.1);
+        }
+
+        .ritual-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+    </style>
+<script type="importmap">
+{
+  "imports": {
+    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
+    "@google/genai": "https://esm.sh/@google/genai@^1.36.0",
+    "react/": "https://esm.sh/react@^19.2.3/",
+    "react": "https://esm.sh/react@^19.2.3"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+<body>
+    <div id="root"></div>
+<script type="module" src="/index.tsx"></script>
+</body>
+</html>
